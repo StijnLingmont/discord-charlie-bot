@@ -1,0 +1,10 @@
+{
+    "help": {
+        "name": "Helper",
+        "commands": ["help", "helper", "commands"]
+    },
+    "serverList": {
+        "name": "Server List",
+        "commands": ["server", "serverlist"]
+    }
+}
