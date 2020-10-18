@@ -6,5 +6,9 @@
     "serverList": {
         "name": "Server List",
         "commands": ["server", "serverlist"]
+    },
+    "scoreboard": {
+        "name": "Scoreboard",
+        "commands": ["scoreboard", "sb", "levels"]
     }
 }

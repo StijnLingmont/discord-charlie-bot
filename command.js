@@ -7,8 +7,6 @@ module.exports = (client, aliases, callback) => {
     client.on('message', message => {
         const { content } = message
 
-        console.log(aliases)
-
         aliases.forEach(alias => {
             const command = `${prefix}${alias}`
 
