@@ -1,9 +1,9 @@
 const Discord = require("discord.js")
 
 module.exports = {
-    name: 'Bannen',
-    description: 'Ban a player from the server',
-    commands: ['ban', 'banhammer'],
+    name: 'Kicking',
+    description: 'Kick a player from the server',
+    commands: ['kick', 'kickhammer'],
     expectedArgs: '<user> <reason>',
     permisionError: 'You need to be an administrator to do this!',
     minArgs: 1,
@@ -24,8 +24,8 @@ module.exports = {
         else
             reason = `${message.author.tag} - No reason given` //Create reason as text
 
-        user.ban({reason: reason})
-        message.channel.send(`User has been banned by ${message.author.toString()}! Reason: ${arguments.join(' ')}`)
+        user.kick({reason: reason})
+        message.channel.send(`User has been kicked by ${message.author.toString()}! Reason: ${reason}`)
     },
     permissions: ['ADMINISTRATOR', 'BAN_MEMBERS'],
     requiredRoles: [],
