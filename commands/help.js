@@ -42,7 +42,7 @@ module.exports = {
     name: "Help",
     description: "Get a list of all the commands available in this bot.",
     commands: ['help', 'commands'],
-    exceptedArgs: '',
+    expectedArgs: '',
     permisionError: '',
     minArgs: 0,
     maxArgs: 0,

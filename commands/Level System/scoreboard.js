@@ -6,7 +6,7 @@ module.exports = {
     name: "Scoreboard",
     description: "Get the scoreboard with top active members.",
     commands: ["scoreboard", "sb", "levels"],
-    exceptedArgs: '',
+    expectedArgs: '',
     permisionError: '',
     minArgs: 0,
     maxArgs: 0,
