@@ -69,7 +69,9 @@ module.exports = (client, commandOptions) => {
 
     // Listen for messages
     client.on('message', message => {
-        if (message.author.bot) return; //Check if message is from bot
+        if (message.author.bot) return //Check if message is from bot
+
+        if (message.guild === null) return //Check if message is an dm
 
         const { member, content, guild } = message
 

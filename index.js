@@ -55,6 +55,8 @@ client.on('ready', () => {
 
         if (message.author.bot) return //Check if user is bot
 
+        if (message.guild === null) return //Check if message is an dm
+
         if(Command.checkCommandStatement(content)) return //Check is message is command
 
         //Remove message when it has blacked word
