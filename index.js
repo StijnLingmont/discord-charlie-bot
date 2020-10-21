@@ -9,6 +9,7 @@ const Command = new CommandClass.Commands(client)
 const Scoreboard = require("./database/scoreboard")
 const User = require('./database/user')
 const Server = require('./database/server')
+const Blacklist = require('./database/blacklist')
 //#endregion
 
 //#region JSON files
@@ -52,9 +53,18 @@ client.on('ready', () => {
     client.on("message", message => {
         const { content } = message
 
-        if (message.author.bot) return; //Check if user is bot
+        if (message.author.bot) return //Check if user is bot
 
-        if(Command.checkCommandStatement(content)) return; //Check is message is command
+        if(Command.checkCommandStatement(content)) return //Check is message is command
+
+        //Remove message when it has blacked word
+        Blacklist.checkIfInBlackList(message, (blockedWord) => {
+            if(blockedWord) {
+                message.delete()
+                message.reply('You have used a word that is on the blacklist. Please be aware of the words you use!')
+                return
+            }
+        })
 
         Scoreboard.giveXp(message)
     });

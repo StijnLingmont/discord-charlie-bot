@@ -33,6 +33,20 @@ class BlackList {
             callback(result.affectedRows)
         })
     }
+
+    checkIfInBlackList(message, callback) {
+        var hasBlockedWord = false
+        var sentence = message.content
+
+        this.getBlackList(message.guild, (words)=> {
+            for(var { banned_word } of words) {
+                if(sentence.toLowerCase().includes(banned_word.toLowerCase()))
+                    hasBlockedWord = true
+            }
+
+            callback(hasBlockedWord)
+        })
+    }
 }
 
 module.exports = new BlackList()
