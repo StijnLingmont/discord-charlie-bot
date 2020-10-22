@@ -19,7 +19,6 @@ class AhProducts {
 
     storeProduct(guild, name, url) {
         this.getProduct(guild, name, (result) => {
-            console.log(result)
             if(result != undefined) return
 
             db.query(`INSERT INTO ah_products(server_id, name, url) VALUES('${guild.id}', '${name}', '${url}')`, function(err, result, fields) {

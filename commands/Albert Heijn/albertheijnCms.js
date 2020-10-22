@@ -30,6 +30,6 @@ module.exports = {
             }
         }
     },
-    permissions: [],
+    permissions: ['ADMINISTRATOR'],
     requiredRoles: [],
 }
