@@ -104,40 +104,28 @@ module.exports = {
             console.log(error)
         })
 
-        // var isAuth = true
-        // if(!isAuth) {
-        //     (async () => {
-        //         // Opens the image in the default image viewer and waits for the opened app to quit.
-        //         await open(`https://www.bungie.net/en/OAuth/Authorize?client_id=${ destiny.user_id }&response_type=code`, (response) => {
-        //             console.log(response)
-        //         })
-        //         console.log('The image viewer app quit');
-        //     })();
-        // }
-        // else {
-        //     var X = Buffer.from(destiny.user_id + ":" + destiny.client_secret).toString('base64');
+        // var X = Buffer.from(destiny.user_id + ":" + destiny.client_secret).toString('base64');
 
-        //     var token = "a9d8b67c62f8e72a11525910a89bee13"
-        //     var userId = destiny.user_id;
-        //     Axios.post('https://www.bungie.net/Platform/App/OAuth/Token/', `client_id=${userId}&grant_type=authorization_code&code=${token}`, 
-        //     {
-        //         headers: {
-        //             'X-API-KEY': destiny.ApiKey,
-        //             'content-type': 'application/x-www-form-urlencoded',
-        //             'Authorization': 'Basic ' + X
-        //         }
+        // console.log(X)
+
+        // var token = "a9d8b67c62f8e72a11525910a89bee13"
+        // var userId = destiny.user_id;
+        // Axios.post('https://www.bungie.net/Platform/App/OAuth/Token/', `client_id=${userId}&grant_type=authorization_code&code=${token}`, 
+        // {
+        //     headers: {
+        //         'X-API-KEY': destiny.ApiKey,
+        //         'content-type': 'application/x-www-form-urlencoded',
+        //         'Authorization': 'Basic ' + X
+        //     }
+        // })
+        // .then(function (response) {
+        //     // handle success
+        //     console.log(response.data);
         //     })
-        //     .then(function (response) {
-        //         // handle success
-        //         console.log(response.data);
-        //       })
-        //       .catch(function (error) {
-        //         // handle error
-        //         console.log(error);
-        //     });
-
-        //     message.channel.send("You will be redirected...")
-        // }
+        //     .catch(function (error) {
+        //     // handle error
+        //     console.log(error);
+        // });
     },
     permissions: [],
     requiredRoles: [],
