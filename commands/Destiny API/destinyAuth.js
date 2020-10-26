@@ -1,90 +1,93 @@
 const Discord = require("discord.js")
 const Axios = require("axios")
-const open = require('open')
-const DestinyUser = require("../../database/destinyUser")
 const { destiny } = require("../../config.json")
-const { response } = require("express")
 
-class AuthToken {
-    static createFormParams(params) {
-        return Object.keys(params)
-            .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-            .join('&')
-    }
-}
+function MakeUserCard(member, message) {
+    var infoFields;
 
-function CheckUser(member, message) {
-    const filter = (reaction, user) => ["✅", "❌"].includes(reaction.emoji.name) && user.id === message.author.id
+    infoFields = [];
 
-    infoFields = [
-        {
-            'name': "Username",
-            'value': member.displayName
-        },
-        {
-            'name': "First access:",
-            'value': member.firstAccess
-        },
-    ];
-
-    if(member.steamDisplayName != undefined) {
-        infoFields.push(        
-            {
-            'name': "Steam Display Name",
-            'value': member.steamDisplayName,
-            'inline': true
-            }
-        )
-    }
-
-    if(member.twitchDisplayName != undefined) {
-        infoFields.push(        
-            {
-            'name': "Twitch Display Name",
-            'value': member.twitchDisplayName,
-            'inline': true
-            }
-        )
+    for(var profile of member.profiles) {
+        var value = `
+        Username: ${profile.displayName}
+        Last played: ${profile.dateLastPlayed}
+        `
+        infoFields.push({
+            'name': GetMembershipType(profile.membershipType),
+            'value': value,
+        })
+        console.log(profile)
     }
 
     const memberInfo = new Discord.MessageEmbed()
-    .setTitle("Player response")
-    .setDescription("Is this your account?")
+    .setTitle(`${member.bungieName}`)
     .addFields(infoFields)
     .setThumbnail(`https://www.bungie.net${member.profilePicturePath}`)
 
-    message.channel.send(memberInfo).then(async msg => {
+    message.channel.send(memberInfo)
+}
 
-        //Give standard reactions
-        await msg.react("✅")
-        await msg.react("❌")
+function GetMembershipType(membershipType) {
+    var type = null;
+    switch(membershipType) {
+        case 1:
+            type = "Xbox"
+            break;
+        case 2:
+            type = "Psn"
+            break;
+        case 3:
+            type = "Steam"
+            break;
+        case 4:
+            type = "Blizzard"
+            break;
+        case 5:
+            type = "Stadia"
+            break;
+        case 10:
+            type = "Demon"
+            break;
+        default: 
+            type = null
+            break;
+    }
 
-        msg.awaitReactions(filter, {
-            max: 1,
-            time: 30000,
-            errors: ['time']
-        }).then(collected => {
-            const reaction = collected.first().emoji.name
-            
-            //Check if the result is right or not
-            if(reaction === "✅") {
-                DestinyUser.storeBaseUser(member) //Store the base info of a user
+    return type
+}
 
-                //Redirect to authentication
-                message.channel.send("You will be redirected...")
-                open(`https://www.bungie.net/en/OAuth/Authorize?client_id=${ destiny.user_id }&response_type=code`)
+function SaveProfiles(member, profiles, message) {
+    var userInfo = {
+        bungieName: member.displayName,
+        profilePicturePath: member.profilePicturePath
+    }
+    userInfo.profiles = []
 
-            } else if(reaction === "❌") {
-                message.channel.send("Check if you're username is right and try again!")
-            }
-        })
+    for(var profile of profiles) {
+        userInfo.profiles.push(profile)
+    }
+
+    MakeUserCard(userInfo, message)
+}
+
+function GetProfiles(member, message) {
+    Axios.get(`https://www.bungie.net/Platform/Destiny2/254/Profile/${member.membershipId}/LinkedProfiles/`, {
+        headers: {
+          'X-API-Key': destiny.ApiKey
+        }
+    })
+    .then((response) => {
+        SaveProfiles(member, response.data.Response.profiles, message)
+    })
+    .catch((error) => {
+        console.log(error)
     })
 }
 
 module.exports = {
-    name: "Destiny Authentication",
-    description: "Authenticate for the Destiny 2 bot",
-    commands: ['destinyauth', 'dstauth', 'dsauth'],
+    name: "Destiny - Search User",
+    description: "Search for Bungie users",
+    commands: ['searchDestiny', 'searchdes', 'sDestiny', 'searchd'],
     expectedArgs: '<bungie username>',
     permisionError: '',
     minArgs: 1,
@@ -97,35 +100,11 @@ module.exports = {
         })
         .then((response) => {
             var member = response.data.Response[0]
-
-            CheckUser(member, message)
+            GetProfiles(member, message)
         })
         .catch((error) => {
             console.log(error)
         })
-
-        // var X = Buffer.from(destiny.user_id + ":" + destiny.client_secret).toString('base64');
-
-        // console.log(X)
-
-        // var token = "a9d8b67c62f8e72a11525910a89bee13"
-        // var userId = destiny.user_id;
-        // Axios.post('https://www.bungie.net/Platform/App/OAuth/Token/', `client_id=${userId}&grant_type=authorization_code&code=${token}`, 
-        // {
-        //     headers: {
-        //         'X-API-KEY': destiny.ApiKey,
-        //         'content-type': 'application/x-www-form-urlencoded',
-        //         'Authorization': 'Basic ' + X
-        //     }
-        // })
-        // .then(function (response) {
-        //     // handle success
-        //     console.log(response.data);
-        //     })
-        //     .catch(function (error) {
-        //     // handle error
-        //     console.log(error);
-        // });
     },
     permissions: [],
     requiredRoles: [],
