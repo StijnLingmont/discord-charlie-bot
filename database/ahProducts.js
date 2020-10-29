@@ -1,6 +1,8 @@
 const db = require('./dbconnect')()
 
 class AhProducts {
+
+    // Get all products that are added in the list
     getProducts(guild, callback) {
         db.query(`SELECT * FROM ah_products WHERE server_id = '${guild.id}'`, function(err, result, fields) {
             if (err) throw err
@@ -9,6 +11,7 @@ class AhProducts {
         })
     }
 
+    // Get a specfic product
     getProduct(guild, product, callback) {
         db.query(`SELECT * FROM ah_products WHERE server_id = '${guild.id}' AND name = '${product}' LIMIT 1`, function(err, result, fields) {
             if (err) throw err
@@ -17,6 +20,7 @@ class AhProducts {
         })
     }
 
+    // Store a product
     storeProduct(guild, name, url) {
         this.getProduct(guild, name, (result) => {
             if(result != undefined) return
@@ -27,12 +31,14 @@ class AhProducts {
         })
     }
 
+    // Update a product
     updateProduct(guild, name, url) {
         db.query(`UPDATE ah_products SET name = '${name}', url = '${url}' WHERE server_id = '${guild.id}' AND name = '${name}' AND EXISTS(SELECT id FROM ah_products WHERE server_id = '${guild.id}' AND name = '${name}' LIMIT 1)`, function(err, result, fields) {
             if (err) throw err
         })
     }
 
+    // Delete a Product
     deleteProduct(guild, name) {
         db.query(`DELETE FROM ah_products WHERE server_id = '${guild.id}' AND name = '${name}' AND EXISTS(SELECT id FROM ah_products WHERE server_id = '${guild.id}' AND name = '${name}' LIMIT 1)`, function(err, result, fields) {
             if (err) throw err

@@ -1,6 +1,8 @@
 const db = require('./dbconnect')()
 
 class BlackList {
+
+    // Store a blacklisted word
     storeBlackList(guild, word, callback) {
         db.query(`SELECT * FROM blacklist WHERE server_id = '${guild.id}' AND banned_word = '${word}' LIMIT 1`, function(err, result, fields) {
             if (err) throw err
@@ -16,6 +18,7 @@ class BlackList {
         })
     }
 
+    //Get all blacklisted words
     getBlackList(guild, callback) {
         db.query(`SELECT * FROM blacklist WHERE server_id = ${guild.id}`, function (err, result, fields) {
             if (err) throw err
@@ -24,6 +27,7 @@ class BlackList {
         })
     }
 
+    //Remove a blacklisted word
     removeBlackList(guild, word, callback) {
         db.query(`DELETE FROM blacklist WHERE server_id = '${guild.id}' AND banned_word = '${word}' AND EXISTS(SELECT id FROM blacklist WHERE server_id = '${guild.id}' AND banned_word = '${word}' LIMIT 1)`, function (err, result, fields) {
             if (err) throw err
@@ -34,6 +38,7 @@ class BlackList {
         })
     }
 
+    //Check if word is blacklisted
     checkIfInBlackList(message, callback) {
         var hasBlockedWord = false
         var sentence = message.content

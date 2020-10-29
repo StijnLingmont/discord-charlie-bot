@@ -1,7 +1,9 @@
+//#region Variable Initialisation
 const Discord = require("discord.js")
 const client = new Discord.Client();
 const fs = require("fs")
 const path = require("path")
+//#endregion
 
 //#region All instances for this project
 const CommandClass = require('./command');
@@ -16,35 +18,44 @@ const Blacklist = require('./database/blacklist')
 const { commandFile, token } = require("./config.json")
 //#endregion
 
+//Event when discord bot is ready
 client.on('ready', () => {
-
+    //Get main base message for when the discord bot is ready
     console.log('The client is ready!')
 
+    //Base file for functionality commands
     const commandBase = require(`./commands/${commandFile}`)
 
+    //Read all command files in folder
     const readCommands = dir => {
+        //Get list of all files in the directory
         const files = fs.readdirSync(path.join(__dirname, dir)) //Get all files in the directory
 
+        //Go trough all the files
         for(const file of files) {
-            const stat = fs.lstatSync(path.join(__dirname, dir, file))
+            const stat = fs.lstatSync(path.join(__dirname, dir, file)) //Get main data of file
+
+            //Check if the file is a folder or the base command file
             if(stat.isDirectory())
+                //Go in the folder and scan files there
                 readCommands(path.join(dir, file))
             else if(file !== commandFile) {
+                //Get options of command and load in base functionality for the command
                 const option = require(path.join(__dirname, dir, file))
                 commandBase(client, option)
             }
         }
     }
 
+    //Read all commands added to the bot
     readCommands('commands');
 
-    // When joining a server
+    // When joining a server store it in database
     client.on("guildCreate", guild => {
-        console.log("Joined a new guild: " + guild.name);
-
         Server.storeServer(guild)
     })
 
+    //Create user when joining
     client.on('guildMemberAdd', member => {
         User.createUser(member.user, member.guild.id, (userData) => {})
     });
@@ -68,8 +79,10 @@ client.on('ready', () => {
             }
         })
 
+        //Give XP to user
         Scoreboard.giveXp(message)
     });
 })
 
+//Login to the discord server
 client.login(token)

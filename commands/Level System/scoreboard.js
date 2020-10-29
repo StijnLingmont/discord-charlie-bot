@@ -14,11 +14,15 @@ module.exports = {
         var scorelist = ""
         var scorePlace = 1
         
+        //Get all scoreboard players
         Scoreboard.getScoreboard(message.guild, (scoreboardItems) => {
+
+            //Go trough all players from scoreboard
             scoreboardItems.forEach((scoreboardItem) => {
                 var guild = message.guild
                 var user = client.users.cache.get(scoreboardItem['user_id']);
 
+                //Fill the string list for the embed
                 scorelist += `${scorePlace}# - ${user.username} - Level ${scoreboardItem['level']} - ${scoreboardItem['xp']} xp \n`
                 scorePlace++
             })

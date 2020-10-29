@@ -1,6 +1,8 @@
-module.exports = getDir()
+var path = require('path')
 
+//Get the main directory
 function getDir() {
-    var path = require('path')
     return path.resolve(__dirname)
 }
+
+module.exports = getDir()

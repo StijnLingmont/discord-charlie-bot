@@ -1,6 +1,8 @@
 const db = require('./dbconnect')()
 
 class Server {
+
+    // Store server
     storeServer(guild) {
         console.log(guild)
         db.query(`SELECT * FROM servers WHERE id = ${guild.id}`, function (err, result, fields) {

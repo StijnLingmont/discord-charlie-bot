@@ -1,10 +1,12 @@
 const db = require('./dbconnect')()
 
 class User {
+
     constructor(client) {
         this.client = client
     }
 
+    //Store User
     createUser(user, serverId, callback) {
         const main = this;
 

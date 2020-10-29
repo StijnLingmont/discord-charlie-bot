@@ -11,6 +11,8 @@ module.exports = {
     minArgs: 1,
     maxArgs: 1,
     callback: (message, arguments, text, client) => {
+
+        //Remove blacklist item
         Blacklist.removeBlackList(message.guild, arguments[0], (deleteStatus) => {
             if(deleteStatus > 0) {
                 message.channel.send("Word is removed from blacklist!")

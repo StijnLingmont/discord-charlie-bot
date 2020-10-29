@@ -2,6 +2,7 @@ const Discord = require("discord.js")
 const Axios = require("axios")
 const { destiny } = require("../../config.json")
 
+// Create a card for the user with the info
 function MakeUserCard(member, message) {
     var infoFields;
 
@@ -27,6 +28,7 @@ function MakeUserCard(member, message) {
     message.channel.send(memberInfo)
 }
 
+// Get the membership type from the Destiny 2 API
 function GetMembershipType(membershipType) {
     var type = null;
     switch(membershipType) {
@@ -56,6 +58,7 @@ function GetMembershipType(membershipType) {
     return type
 }
 
+// Save the profiles in the member info
 function SaveProfiles(member, profiles, message) {
     var userInfo = {
         bungieName: member.displayName,
@@ -70,6 +73,7 @@ function SaveProfiles(member, profiles, message) {
     MakeUserCard(userInfo, message)
 }
 
+// Get the profiles from the Bungie account
 function GetProfiles(member, message) {
     Axios.get(`https://www.bungie.net/Platform/Destiny2/254/Profile/${member.membershipId}/LinkedProfiles/`, {
         headers: {
@@ -93,13 +97,15 @@ module.exports = {
     minArgs: 1,
     maxArgs: 1,
     callback: (message, arguments, text, client) => {
+
+        //Get the base info from the bungie acount
         Axios.get(`https://www.bungie.net/Platform/User/SearchUsers?q=${arguments[0]}`, {
             headers: {
               'X-API-Key': destiny.ApiKey
             }
         })
         .then((response) => {
-            var member = response.data.Response[0]
+            var member = response.data.Response[0] //Base info from bungie account
             GetProfiles(member, message)
         })
         .catch((error) => {

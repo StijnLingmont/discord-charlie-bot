@@ -9,12 +9,16 @@ module.exports = {
     minArgs: 1,
     maxArgs: 1,
     callback: (message, arguments, text, client) => {
+
+        //Check if argument is an Integer
         if(!isNaN(parseInt(arguments[0]))) {
             var userId = arguments[0]
+            
+            //Unban user
             message.guild.members.unban(userId)
+            
             message.channel.send(`${userId} is unbanned!`)
         }
-
     },
     permissions: ['ADMINISTRATOR', 'BAN_MEMBERS'],
     requiredRoles: [],

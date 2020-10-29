@@ -1,6 +1,7 @@
 const { prefix } = require("../config.json")
 const { permisionError, callback } = require("./help")
 
+//Check if permission is a avaiable one
 const validatePermissions = (permissions) => {
     const validPermissions = [
       'CREATE_INSTANT_INVITE',
@@ -45,6 +46,7 @@ const validatePermissions = (permissions) => {
 
 
 module.exports = (client, commandOptions) => {
+    //Base permission settings for every command
     let {
         commands,
         expectedArgs = '',

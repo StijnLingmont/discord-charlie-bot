@@ -5,6 +5,7 @@ const mainDir = require('../../mainPath')
 const path = require('path')
 const AhProducts = require('../../database/ahProducts')
 
+// Create Embed card for the product
 function createProductCard(product) {
     return new Discord.MessageEmbed()
     .setTitle("AH Product")
@@ -19,6 +20,7 @@ function createProductCard(product) {
 	)
 }
 
+// Get a product
 function getSpeceficProduct(message, productName) {
     AhProducts.getProduct(message.guild, productName, (product) => {
         //Check if there is a product find
@@ -63,6 +65,7 @@ function getSpeceficProduct(message, productName) {
     })
 }
 
+// Get list of all available products
 function getAllProducts(message) {
     var productList = ""
     AhProducts.getProducts(message.guild, (products) => {
@@ -87,6 +90,8 @@ module.exports = {
     minArgs: 0,
     maxArgs: null,
     callback: (message, arguments, text, client) => {
+
+        //Check if player wants the full list or a specefic product
         if(arguments.length > 0) {
             getSpeceficProduct(message, text)
         }

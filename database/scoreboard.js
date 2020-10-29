@@ -3,6 +3,7 @@ const User = require('./user')
 const { maxLevel, maxXp } = require("../config.json")
 
 class Scoreboard {
+
     constructor() {
         this.talkedRecently = {}
     }

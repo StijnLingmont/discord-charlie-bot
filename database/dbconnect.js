@@ -1,6 +1,8 @@
 var mysql = require('mysql');
 
 module.exports = () => {
+    
+    // Create Database connection settings
     var con = mysql.createConnection({
         host: "localhost",
         user: "root",
@@ -9,6 +11,7 @@ module.exports = () => {
         multipleStatements: true
     });
     
+    // Connect to Database
     con.connect(function(err) {
         if (err) throw err;
     });
