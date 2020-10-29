@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/StijnLingmont/discord-charlie-bot#readme",
   "dependencies": {
+    "async": "^3.2.0",
     "axios": "^0.20.0",
     "discord.js": "^12.3.1",
     "express": "^4.17.1",

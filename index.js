@@ -18,6 +18,9 @@ const Blacklist = require('./database/blacklist')
 const { commandFile, token } = require("./config.json")
 //#endregion
 
+//Set max EventMitter
+client.setMaxListeners(20)
+
 //Event when discord bot is ready
 client.on('ready', () => {
     //Get main base message for when the discord bot is ready

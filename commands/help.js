@@ -25,7 +25,7 @@ const getAllCommands = (dir, message) => {
         else if(file !== commandFile) {
             const option = require(path.join(__dirname, dir, file)) //Get options
 
-            const { commands, name, description, permissions } = option //Retrieve needed options
+            const { commands, name, description, permissions, expectedArgs } = option //Retrieve needed options
             var commandBody = "" //Body of the command item
             
             //Check if user has the perms for the command
@@ -52,6 +52,11 @@ const getAllCommands = (dir, message) => {
                     commandBody += "``" + prefix + command + "`` "
                 }
 
+                //Add expected args to the list
+                if(expectedArgs.length > 0) {
+                    commandBody += "- ``" + expectedArgs + "``"
+                }
+                
                 //Add description in the body
                 commandBody +=  "\n" + description
 
