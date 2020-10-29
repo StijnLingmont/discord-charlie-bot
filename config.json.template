@@ -1,0 +1,12 @@
+{
+    "token": "",
+    "prefix": "",
+    "commandFile": "",
+    "maxLevel": ,
+    "maxXp": ,
+    "destiny": {
+        "user_id": ,
+        "ApiKey": "",
+        "client_secret": ""
+    }
+}
